@@ -175,3 +175,44 @@ var moneyInMyPocket: Money = Money()
 moneyInMyPocket.dollar = 10
 print(moneyInMyPocket.won)
 
+// - 프로퍼티 감시자 사용
+struct Money2 {
+    var currencyRate: Double = 1100 {
+        willSet(newRate) {
+            print("환율이 \(currencyRate)에서 \(newRate)으로 변경될 예정입니다.")
+        }
+        didSet(oldRate) {
+            print("환율이 \(oldRate)에서 \(currencyRate)으로 변경되었습니다.")
+        }
+    }
+    var dollar: Double = 0 {
+        willSet {
+            print("\(dollar)에서 \(newValue)달러로 변경될 예정입니다.")
+        }
+        didSet {
+            print("\(oldValue)달러에서 \(dollar)달러로 변경되었습니다.")
+        }
+    }
+    var won: Double {
+        get {
+            return dollar * currencyRate
+        }
+        set {
+            dollar = newValue / currencyRate
+        }
+        
+        //프로퍼티 감시자와 연산 프로퍼티 기능은 동시 사용 불가
+    }
+}
+var moneyInMyPocket2: Money2 = Money2()
+moneyInMyPocket2.currencyRate = 1150
+moneyInMyPocket2.dollar = 10
+var aaa: Int = 100 {
+    willSet {
+        print("\(aaa)에서 \(newValue)로 변경될 예정입니다.")
+    }
+    didSet {
+        print("\(oldValue)에서 \(aaa)로 변경되었습니다.")
+    }
+}
+aaa = 200
