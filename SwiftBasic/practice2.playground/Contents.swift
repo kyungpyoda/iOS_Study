@@ -37,7 +37,7 @@ class SomeClass {
 }
 var someClassInstance: SomeClass = SomeClass()
 func someFunc2(classInstance: SomeClass) {
-    var localVar: SomeClass = classInstance
+    let localVar: SomeClass = classInstance
     localVar.someProperty = "My Property has been Changed"
 }
 someFunc2(classInstance: someClassInstance)
@@ -216,3 +216,131 @@ var aaa: Int = 100 {
     }
 }
 aaa = 200
+
+var c = 5
+for i in 1..<2 {
+    print(i)
+}
+
+
+// MARK: - inherit
+class Test {
+    var name: String = "Test"
+    
+    func selfIntroduce() {
+        print("\(name)클래스 입니다.")
+    }
+    class func method() {
+        print("Test.. 과연")
+    }
+}
+class TestForTest: Test {
+    var more: String = "자식입니다"
+    
+    override func selfIntroduce() {
+        super.selfIntroduce()
+        print("그리고 \(super.name)의 자식클래스 \(more)입니다.")
+    }
+    override class func method() {
+        super.method()
+        print("호오...")
+    }
+    static func qwer() {
+        
+    }
+}
+class TestForTestForTest: TestForTest {
+    override final class func method() {
+        super.method()
+        print("찐막")
+    }
+    /*
+    override static func qwer() {
+        print()
+    }
+     */
+}
+
+
+var t: Test = Test()
+var tt: TestForTest = TestForTest()
+t.selfIntroduce()
+tt.selfIntroduce()
+var ttt: TestForTestForTest = TestForTestForTest()
+TestForTestForTest.method()
+
+//MARK: - instance init, deinit
+class PersonC {
+    var name: String
+    var age: Int
+    var nickName: String?
+    init(name: String, age: Int) {
+        self.name = name
+        self.age = age
+    }
+    convenience init(name: String, age: Int, nickName: String) {
+        self.init(name: name, age: age)
+        self.nickName = nickName
+    }
+}
+var p1: PersonC = PersonC(name: "pio", age: 26, nickName: "piopio")
+dump(p1)
+
+//MARK: - 암시적 추출 프로퍼티
+class Puppy {
+    var name: String
+    var guardian: PersonC!
+    
+    init(name: String) {
+        self.name = name
+    }
+    func goOut() {
+        print("\(name)가 보호자 \(guardian.name)에게 꼬리를 흔듭니다.")
+    }
+}
+var happy: Puppy = Puppy(name: "happy")
+//happy.goOut()
+happy.guardian = p1
+happy.goOut()
+
+class PersonD {
+    var name: String
+    var age: Int
+    var nickName: String?
+    init?(name: String, age: Int) {
+        if (0...120).contains(age) == false {
+            return nil
+        }
+        if name.count == 0 {
+            return nil
+        }
+        self.name = name
+        self.age = age
+    }
+}
+//var p2: PersonD = PersonD(name: "fanna", age: 22)
+let fanna: PersonD? = PersonD(name: "fanna", age: 22)
+var joker: PersonD? = PersonD(name: "", age: 23)
+var steve: PersonD? = PersonD(name: "steve", age: 123)
+dump(fanna)
+dump(joker)
+dump(steve)
+class PersonE {
+    var name: String
+    var pet: Puppy?
+    var child: PersonC
+    
+    init(name: String, child: PersonC) {
+        self.name = name
+        self.child = child
+    }
+    
+    deinit {
+        if let petName = pet?.name {
+            print("\(name)가 \(child.name)에게 \(petName)을 인도합니다.")
+        }
+    }
+}
+var donald: PersonE? = PersonE(name: "donald", child: p1)
+donald?.pet = happy
+donald = nil
