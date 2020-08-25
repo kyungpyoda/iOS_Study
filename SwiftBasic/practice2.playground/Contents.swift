@@ -344,3 +344,47 @@ class PersonE {
 var donald: PersonE? = PersonE(name: "donald", child: p1)
 donald?.pet = happy
 donald = nil
+
+func testfunc(_ param: String?) {
+    print("param : \(param)")
+}
+func testfunc() {
+    print("NO param")
+}
+testfunc()
+testfunc("ppp")
+
+class Song {
+    var title: String?
+    var lyrics: String?
+    var artist: Artist?
+}
+class Artist {
+    var name: String?
+    var age: Int?
+}
+let song = Song()
+//song.artist = Artist()
+song.artist?.name = "a"
+print(song.artist?.name)
+
+//MARK: - type casting
+
+// - 이건 타입캐스티이 아님
+//let someInt: Int = 100
+//let someDouble: Double = Double(someInt)
+
+class One {
+    var name = "one"
+}
+class Two: One {
+    var prop = "two"
+}
+class Three: Two {
+    var prop2 = "three"
+}
+
+let onewithtwo: One = Two() as One
+dump(onewithtwo)
+let one: One = One()
+dump(one)
