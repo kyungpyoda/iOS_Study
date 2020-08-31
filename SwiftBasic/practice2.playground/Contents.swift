@@ -388,3 +388,33 @@ let onewithtwo: One = Two() as One
 dump(onewithtwo)
 let one: One = One()
 dump(one)
+
+//MARK: - assert, guard
+
+var someInt: Int = 0
+assert(someInt == 0, "someInt != 0")
+someInt = 1
+//assert(someInt == 0, "someInt != 0")
+
+func functionWithGuard(age: Int?) {
+    guard let unwrappedAge = age,
+        unwrappedAge < 130,
+        unwrappedAge >= 0 else {
+        print("나이값 입력이 잘못됨")
+        return
+    }
+    print("나이는 \(unwrappedAge)세 입니다.")
+}
+
+func someFunction(info: [String : Any]) {
+    guard let name = info["name"] as? String else {
+        return
+    }
+    guard let age = info["age"] as? Int, age >= 0 else {
+        return
+    }
+    print("\(name) \(age)")
+}
+someFunction(info: ["name" : "jenny", "age" : "10"])
+someFunction(info: ["name" : "jenny"])
+someFunction(info: ["name" : "jenny", "age" : 10])
